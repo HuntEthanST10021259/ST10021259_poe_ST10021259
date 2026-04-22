@@ -1,0 +1,43 @@
+﻿@model Contract
+@{
+    ViewData["Title"] = "New Contract";
+}
+<h2>New Contract</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data" style="max-width:650px">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="mb-3">
+        <label asp-for="ClientId" class="form-label">Client</label>
+        <select asp-for="ClientId" asp-items="ViewBag.Clients" class="form-select">
+            <option value="">-- Select Client --</option>
+        </select>
+        <span asp-validation-for="ClientId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ServiceLevel" class="form-label"></label>
+        <input asp-for="ServiceLevel" class="form-control" />
+        <span asp-validation-for="ServiceLevel" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col mb-3">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+        </div>
+        <div class="col mb-3">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <input type="text" class="form-control bg-light" readonly value="Draft" />
+        <input type="hidden" asp-for="Status" value="0"/>
+        <small class="text-muted">Status is set to Draft and can be changed after creation in Edit.</small>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Signed Agreement (PDF only, max 10MB)</label>
+        <input type="file" name="signedAgreement" accept=".pdf" class="form-control" />
+        <span class="text-danger">@ViewData["FileError"]</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

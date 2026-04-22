@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ServiceRequest>
+@{
+    ViewData["Title"] = "Service Requests";
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Service Requests</h2>
+    <a asp-action="Create" class="btn btn-primary">+ New Request</a>
+</div>
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr><th>Contract</th><th>Description</th><th>Cost (USD)</th><th>Cost (ZAR)</th><th>Rate Used</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var sr in Model)
+        {
+            <tr>
+                <td>@sr.Contract?.Client?.Name</td>
+                <td>@sr.Description</td>
+                <td>@($"$ {sr.CostUsd:N2}")</td>
+                <td>@($"R {sr.CostZar:N2}")</td>
+                <td>@sr.ExchangeRateUsed.ToString("N4")</td>
+                <td><span class="badge bg-secondary">@sr.Status</span></td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@sr.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@sr.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@sr.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

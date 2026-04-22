@@ -1,0 +1,66 @@
+﻿@model ContractFilterViewModel
+@{
+    ViewData["Title"] = "Contracts";
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Contracts</h2>
+    <a asp-action="Create" class="btn btn-primary">+ New Contract</a>
+</div>
+
+<form asp-action="Index" method="get" class="row g-2 mb-4 p-3 bg-light rounded">
+    <div class="col-md-3">
+        <label class="form-label">From Date</label>
+        <input type="date" name="fromDate" class="form-control"
+               value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">To Date</label>
+        <input type="date" name="toDate" class="form-control"
+               value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+            <option value="">All</option>
+            @foreach (var s in Enum.GetValues<ContractStatus>())
+            {
+                <option value="@s" selected="@(Model.Status == s)">@s</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-dark me-2">Search</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr><th>Client</th><th>Service Level</th><th>Start</th><th>End</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Results)
+        {
+            <tr>
+                <td>@c.Client?.Name</td>
+                <td>@c.ServiceLevel</td>
+                <td>@c.StartDate.ToShortDateString()</td>
+                <td>@c.EndDate.ToShortDateString()</td>
+                <td>
+                    <span class="badge @(c.Status == ContractStatus.Active ? "bg-success" : c.Status == ContractStatus.Expired ? "bg-danger" : c.Status == ContractStatus.OnHold ? "bg-warning" : "bg-secondary")">
+                        @c.Status
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@c.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

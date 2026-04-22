@@ -1,0 +1,15 @@
+﻿@model Client
+@{
+    ViewData["Title"] = "Client Details";
+}
+<h2>@Model.Name</h2>
+<dl class="row mt-3">
+    <dt class="col-sm-3">Contact Details</dt>
+    <dd class="col-sm-9">@Model.ContactDetails</dd>
+    <dt class="col-sm-3">Region</dt>
+    <dd class="col-sm-9">@Model.Region</dd>
+    <dt class="col-sm-3">Contracts</dt>
+    <dd class="col-sm-9">@Model.Contracts.Count</dd>
+</dl>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
